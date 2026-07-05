@@ -1,0 +1,78 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Téléchargez votre mise en demeure"
+  description="Votre mise en demeure est prête. Téléchargez le PDF et envoyez-le en recommandé avec accusé de réception."
+>
+  <section class="hero">
+    <span class="tampon tampon--vert">Paiement confirmé</span>
+    <h1 style="margin-top:1rem;">Votre lettre est prête.</h1>
+    <p class="sous-titre">Téléchargez le PDF ci-dessous, imprimez-le en deux exemplaires,
+    signez-le, et envoyez-le en <strong>recommandé avec accusé de réception</strong>.
+    Conservez l'accusé : c'est votre preuve.</p>
+    <button class="btn btn--primaire" id="btn-pdf">Télécharger le PDF</button>
+    <p id="erreur" style="display:none; color:var(--tampon); margin-top:1rem;">
+      Les données du formulaire ont expiré (elles ne quittent jamais votre navigateur).
+      Écrivez-nous à contact@zenfactur.fr avec votre reçu Stripe et nous vous aiderons.
+    </p>
+  </section>
+
+  <section class="prose">
+    <h2>Les 3 prochaines étapes</h2>
+    <p>1. Envoyez la lettre en recommandé AR (comptez ~7 €). 2. Attendez le délai de
+    8 jours indiqué. 3. Sans paiement, passez à
+    <a href="/guides/injonction-de-payer/">l'injonction de payer</a> — notre guide gratuit
+    vous accompagne.</p>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    document.getElementById('btn-pdf').addEventListener('click', () => {
+      const brut = sessionStorage.getItem('zenfactur-md');
+      if (!brut) { document.getElementById('erreur').style.display = 'block'; return; }
+      const d = JSON.parse(brut);
+      const montant = parseFloat(d['f-montant'] || '0').toFixed(2);
+      const estPro = d['d-type'] === 'pro';
+      const dateJour = new Date().toLocaleDateString('fr-FR');
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+      const marge = 20; let y = marge;
+      const ligne = (txt, gras = false, taille = 11) => {
+        doc.setFont('helvetica', gras ? 'bold' : 'normal');
+        doc.setFontSize(taille);
+        const lignes = doc.splitTextToSize(txt, 170);
+        lignes.forEach((l) => {
+          if (y > 275) { doc.addPage(); y = marge; }
+          doc.text(l, marge, y); y += 6;
+        });
+        y += 2;
+      };
+
+      ligne(`${d['c-nom']}\n${d['c-adresse']}\nSIRET : ${d['c-siret']}`);
+      y += 4;
+      doc.text(`${d['d-nom']}`, 120, y); y += 6;
+      doc.splitTextToSize(d['d-adresse'], 70).forEach((l) => { doc.text(l, 120, y); y += 6; });
+      y += 6;
+      ligne(`Le ${dateJour}`);
+      ligne('Lettre recommandée avec accusé de réception', true);
+      ligne(`Objet : MISE EN DEMEURE — facture n° ${d['f-num']} impayée`, true, 12);
+      y += 2;
+      ligne('Madame, Monsieur,');
+      ligne(`Sauf erreur de notre part, la facture n° ${d['f-num']} du ${d['f-date']}, d'un montant de ${montant} € TTC, relative à ${d['f-objet']}, demeure impayée à ce jour malgré son échéance fixée au ${d['f-echeance']}.`);
+      if (d['relances']) ligne(`Nous vous avons déjà relancé : ${d['relances']}.`);
+      ligne(`En conséquence, nous vous mettons en demeure de nous régler la somme de ${montant} € TTC sous huit (8) jours à compter de la réception de la présente.`);
+      ligne(estPro
+        ? `Conformément à l'article L441-10 du Code de commerce, cette somme est majorée des pénalités de retard, ainsi que de l'indemnité forfaitaire de recouvrement de 40 € prévue à l'article D441-5 du même code.`
+        : `Conformément à l'article 1344-1 du Code civil, la présente mise en demeure fait courir les intérêts au taux légal.`);
+      ligne(`À défaut de règlement dans ce délai, nous saisirons la juridiction compétente, notamment par voie d'injonction de payer, sans autre avis.`);
+      ligne('Veuillez agréer, Madame, Monsieur, nos salutations distinguées.');
+      y += 8;
+      ligne(`${d['c-nom']}`, true);
+      ligne('Signature :');
+
+      doc.save(`mise-en-demeure-${d['f-num']}.pdf`);
+    });
+  </script>
+</Base>
