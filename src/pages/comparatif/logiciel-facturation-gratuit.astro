@@ -1,0 +1,42 @@
+---
+import Base from '../../layouts/Base.astro';
+// REMPLACER les URL ci-dessous par vos liens d'affiliation une fois validés (Affilae/Awin).
+const logiciels = [
+  { nom: 'Indy', statut: 'Plateforme Agréée', gratuit: 'Facturation illimitée gratuite', pour: 'Indépendants et micro-entrepreneurs', lien: 'https://www.indy.fr' },
+  { nom: 'Abby', statut: 'Plateforme Agréée', gratuit: 'Devis et factures illimités en formule basique', pour: 'Micro-entrepreneurs', lien: 'https://abby.fr' },
+  { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: 'https://qonto.com' },
+];
+---
+<Base
+  title="Logiciel de facturation gratuit : Indy, Abby ou Qonto ? (comparatif)"
+  description="Trois logiciels de facturation réellement gratuits et conformes à la réforme de la facturation électronique, comparés selon votre statut et votre métier."
+>
+  <article class="prose" style="margin-top:2.5rem;">
+    <span class="tampon tampon--bleu">Comparatif</span>
+    <h1 style="margin-top:1rem;">Quel logiciel de facturation gratuit choisir ?</h1>
+    <p class="mention-affiliation">Cette page contient des liens d'affiliation. Ils ne changent
+    pas le prix pour vous et n'influencent pas nos conclusions.</p>
+
+    <p><em>[Introduction à rédiger : le critère décisif en 2026-2027 n'est plus le prix
+    mais la conformité — Plateforme Agréée ou non.]</em></p>
+
+    <table>
+      <thead>
+        <tr><th>Logiciel</th><th>Conformité e-facture</th><th>Ce qui est gratuit</th><th>Pour qui</th></tr>
+      </thead>
+      <tbody>
+        {logiciels.map((l) => (
+          <tr>
+            <td><a href={l.lien} rel="sponsored nofollow">{l.nom}</a></td>
+            <td>{l.statut}</td>
+            <td>{l.gratuit}</td>
+            <td>{l.pour}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <p><em>[Sections détaillées par logiciel à rédiger, avec limites honnêtes de chaque
+    offre gratuite — c'est ce qui rend le comparatif crédible et différenciant.]</em></p>
+  </article>
+</Base>

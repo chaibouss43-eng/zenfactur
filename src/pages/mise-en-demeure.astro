@@ -1,0 +1,176 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Mise en demeure pour facture impayée : générez-la en 10 minutes"
+  description="Générez une mise en demeure conforme (mentions légales, intérêts de retard, indemnité de 40 €) prête à envoyer en recommandé. 49 €, sans abonnement."
+>
+  <section class="hero" style="padding-bottom:1rem;">
+    <span class="tampon">Lettre recommandée</span>
+    <h1 style="margin-top:1rem;">Votre mise en demeure, conforme et prête à envoyer.</h1>
+    <p class="sous-titre">
+      Répondez aux questions ci-dessous. Vous obtenez une mise en demeure complète :
+      rappel des faits, fondement légal, intérêts de retard au taux légal, indemnité
+      forfaitaire de 40&nbsp;€, délai de paiement. Prête à imprimer et envoyer en
+      recommandé avec accusé de réception.
+    </p>
+  </section>
+
+  <div class="encadre">
+    <strong>Pourquoi une mise en demeure ?</strong> C'est le préalable obligatoire avant
+    toute action en justice (injonction de payer) et elle fait courir officiellement les
+    intérêts de retard. Dans la majorité des cas, elle suffit à débloquer le paiement.
+  </div>
+
+  <form class="formulaire" id="form-md">
+    <fieldset>
+      <legend>1. Vous (le créancier)</legend>
+      <div class="grille-2">
+        <div class="champ">
+          <label for="c-nom">Nom / raison sociale</label>
+          <input id="c-nom" name="c-nom" required autocomplete="organization" />
+        </div>
+        <div class="champ">
+          <label for="c-siret">SIRET</label>
+          <input id="c-siret" name="c-siret" inputmode="numeric" required />
+        </div>
+      </div>
+      <div class="champ">
+        <label for="c-adresse">Adresse complète</label>
+        <input id="c-adresse" name="c-adresse" required autocomplete="street-address" />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. Votre client (le débiteur)</legend>
+      <div class="grille-2">
+        <div class="champ">
+          <label for="d-nom">Nom / raison sociale</label>
+          <input id="d-nom" name="d-nom" required />
+        </div>
+        <div class="champ">
+          <label for="d-type">Type de client</label>
+          <select id="d-type" name="d-type">
+            <option value="pro">Professionnel (B2B)</option>
+            <option value="particulier">Particulier (B2C)</option>
+          </select>
+        </div>
+      </div>
+      <div class="champ">
+        <label for="d-adresse">Adresse complète</label>
+        <input id="d-adresse" name="d-adresse" required />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>3. La facture impayée</legend>
+      <div class="grille-2">
+        <div class="champ">
+          <label for="f-num">Numéro de facture</label>
+          <input id="f-num" name="f-num" required />
+        </div>
+        <div class="champ">
+          <label for="f-montant">Montant TTC (€)</label>
+          <input id="f-montant" name="f-montant" type="number" step="0.01" min="0" required />
+        </div>
+        <div class="champ">
+          <label for="f-date">Date de la facture</label>
+          <input id="f-date" name="f-date" type="date" required />
+        </div>
+        <div class="champ">
+          <label for="f-echeance">Date d'échéance</label>
+          <input id="f-echeance" name="f-echeance" type="date" required />
+        </div>
+      </div>
+      <div class="champ">
+        <label for="f-objet">Objet de la prestation (une phrase)</label>
+        <input id="f-objet" name="f-objet" placeholder="Ex. : travaux de plomberie réalisés au 12 rue…" required />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>4. Relances déjà effectuées (optionnel)</legend>
+      <div class="champ">
+        <label for="relances">Décrivez brièvement (dates des emails, appels…)</label>
+        <textarea id="relances" name="relances" rows="2"></textarea>
+      </div>
+    </fieldset>
+
+    <!--
+      FLUX DE PAIEMENT (Stripe Payment Link, aucun backend) :
+      1. Le bouton "Aperçu gratuit" génère un aperçu filigrané dans la page.
+      2. Le bouton "Obtenir ma lettre" sauvegarde le formulaire en sessionStorage
+         puis redirige vers le Payment Link Stripe.
+      3. Configurer le Payment Link avec une redirection post-paiement vers
+         /mise-en-demeure-telechargement/ qui régénère le PDF final sans filigrane.
+      REMPLACER l'URL ci-dessous par votre vrai Payment Link Stripe.
+    -->
+    <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+      <button type="button" class="btn btn--ghost" id="btn-apercu">Aperçu gratuit</button>
+      <button type="button" class="btn btn--tampon" id="btn-payer">Obtenir ma lettre — 49&nbsp;€</button>
+    </div>
+    <p style="font-size:.85rem; color:var(--grise); margin-top:.75rem;">
+      Paiement sécurisé par Stripe. Document livré immédiatement en PDF. Pas d'abonnement, pas de compte à créer.
+    </p>
+  </form>
+
+  <div id="apercu" class="formulaire" style="display:none; white-space:pre-wrap; font-size:.95rem;"></div>
+
+  <section class="prose">
+    <h2>Questions fréquentes</h2>
+    <h3>Est-ce que cette lettre a une valeur juridique ?</h3>
+    <p>Oui. Une mise en demeure n'a pas besoin d'être rédigée par un avocat pour être
+    valable : elle doit contenir certaines mentions (identités, créance précise,
+    demande expresse de payer, délai) et être envoyée en recommandé avec AR. La lettre
+    générée contient toutes ces mentions.</p>
+    <h3>Et si mon client ne paie toujours pas ?</h3>
+    <p>La mise en demeure est le préalable à l'injonction de payer, une procédure
+    judiciaire simple et peu coûteuse. Notre guide vous explique la suite.</p>
+  </section>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const val = (id) => ($(id) && 'value' in $(id) ? $(id).value.trim() : '');
+
+    function construireLettre(filigrane) {
+      const dateJour = new Date().toLocaleDateString('fr-FR');
+      const montant = parseFloat(val('f-montant') || '0').toFixed(2);
+      const estPro = val('d-type') === 'pro';
+      return [
+        `${val('c-nom')}\n${val('c-adresse')}\nSIRET : ${val('c-siret')}`,
+        `\n${val('d-nom')}\n${val('d-adresse')}`,
+        `\nLe ${dateJour}`,
+        `\nLettre recommandée avec accusé de réception`,
+        `\nObjet : MISE EN DEMEURE — facture n° ${val('f-num')} impayée`,
+        `\nMadame, Monsieur,`,
+        `\nSauf erreur de notre part, la facture n° ${val('f-num')} du ${val('f-date')}, d'un montant de ${montant} € TTC, relative à ${val('f-objet')}, demeure impayée à ce jour malgré son échéance fixée au ${val('f-echeance')}.`,
+        val('relances') ? `\nNous vous avons déjà relancé : ${val('relances')}.` : '',
+        `\nEn conséquence, nous vous mettons en demeure de nous régler la somme de ${montant} € TTC sous huit (8) jours à compter de la réception de la présente.`,
+        estPro
+          ? `\nConformément à l'article L441-10 du Code de commerce, cette somme est majorée des pénalités de retard au taux prévu à nos conditions, ainsi que de l'indemnité forfaitaire de recouvrement de 40 € prévue à l'article D441-5 du même code.`
+          : `\nConformément à l'article 1344-1 du Code civil, la présente mise en demeure fait courir les intérêts au taux légal.`,
+        `\nÀ défaut de règlement dans ce délai, nous saisirons la juridiction compétente, notamment par voie d'injonction de payer, sans autre avis.`,
+        `\nVeuillez agréer, Madame, Monsieur, nos salutations distinguées.`,
+        `\n${val('c-nom')}`,
+        filigrane ? `\n\n===== APERÇU NON VALABLE — VERSION FILIGRANÉE =====` : '',
+      ].filter(Boolean).join('\n');
+    }
+
+    $('btn-apercu').addEventListener('click', () => {
+      if (!document.getElementById('form-md').reportValidity()) return;
+      const zone = $('apercu');
+      zone.textContent = construireLettre(true);
+      zone.style.display = 'block';
+      zone.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    $('btn-payer').addEventListener('click', () => {
+      if (!document.getElementById('form-md').reportValidity()) return;
+      const donnees = {};
+      new FormData(document.getElementById('form-md')).forEach((v, k) => (donnees[k] = v));
+      sessionStorage.setItem('zenfactur-md', JSON.stringify(donnees));
+      // REMPLACER par votre Payment Link Stripe :
+      window.location.href = 'https://buy.stripe.com/REMPLACER_MOI';
+    });
+  </script>
+</Base>

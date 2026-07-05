@@ -1,0 +1,29 @@
+---
+import Base from './Base.astro';
+const { frontmatter } = Astro.props;
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: frontmatter.title,
+  description: frontmatter.description,
+  datePublished: frontmatter.pubDate,
+  inLanguage: "fr-FR",
+};
+---
+<Base title={frontmatter.title} description={frontmatter.description}>
+  <article class="prose" style="margin-top:2.5rem;">
+    <span class={`tampon ${frontmatter.theme === 'impayes' ? '' : 'tampon--bleu'}`}>
+      {frontmatter.theme === 'impayes' ? 'Impayés' : 'Facturation électronique'}
+    </span>
+    <h1 style="margin-top:1rem;">{frontmatter.title}</h1>
+    <p class="meta" style="color:var(--grise);font-size:.9rem;">
+      Mis à jour le {new Date(frontmatter.pubDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+    </p>
+    {frontmatter.affiliation && (
+      <p class="mention-affiliation">Cet article contient des liens d'affiliation, signalés comme tels.
+      Ils ne modifient pas le prix et n'influencent pas nos avis.</p>
+    )}
+    <slot />
+  </article>
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>

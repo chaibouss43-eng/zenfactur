@@ -1,0 +1,27 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const guides = (await getCollection('guides')).sort((a, b) => a.data.priorite - b.data.priorite);
+---
+<Base
+  title="Guides : facturation électronique et factures impayées"
+  description="Tous nos guides pratiques pour artisans et TPE : passer à la facturation électronique, relancer un client, récupérer une facture impayée."
+>
+  <section class="hero" style="padding-bottom:1rem;">
+    <h1>Les guides</h1>
+    <p class="sous-titre">Des réponses concrètes, écrites pour des artisans et gérants de TPE, pas pour des comptables.</p>
+  </section>
+  <div class="grille-cartes">
+    {guides.map((g) => (
+      <div class="carte">
+        <a href={`/guides/${g.id}/`}>
+          <span class={`tampon ${g.data.theme === 'impayes' ? '' : 'tampon--bleu'}`}>
+            {g.data.theme === 'impayes' ? 'Impayés' : 'E-facture'}
+          </span>
+          <h3>{g.data.title}</h3>
+          <p class="meta">{g.data.description}</p>
+        </a>
+      </div>
+    ))}
+  </div>
+</Base>

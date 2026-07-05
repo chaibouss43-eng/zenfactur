@@ -1,0 +1,183 @@
+/* ============================================================
+   FACTURZEN — Design system
+   Direction : vernaculaire administratif français, modernisé.
+   Palette :
+   --marianne  #000091  bleu des documents officiels (actions, liens)
+   --tampon    #C1121F  rouge recommandé / mise en demeure
+   --valide    #1B7A43  vert "conforme"
+   --papier    #FAFAF7  fond papier
+   --encre     #16161D  texte
+   --grise     #6B6B70  texte secondaire
+   ============================================================ */
+
+:root {
+  --marianne: #000091;
+  --marianne-dark: #00006B;
+  --tampon: #C1121F;
+  --valide: #1B7A43;
+  --papier: #FAFAF7;
+  --encre: #16161D;
+  --grise: #6B6B70;
+  --ligne: #DEDEE3;
+
+  --font-display: 'Archivo', system-ui, sans-serif;
+  --font-body: 'Public Sans', system-ui, -apple-system, sans-serif;
+
+  --maxw: 68rem;
+  --maxw-prose: 42rem;
+}
+
+* { box-sizing: border-box; margin: 0; }
+
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { animation: none !important; transition: none !important; }
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--papier);
+  color: var(--encre);
+  line-height: 1.65;
+  font-size: 1.0625rem;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  font-weight: 800;
+}
+h1 { font-size: clamp(2rem, 5.5vw, 3.4rem); }
+h2 { font-size: clamp(1.4rem, 3.2vw, 2rem); margin-top: 2.5rem; margin-bottom: .75rem; }
+h3 { font-size: 1.15rem; margin-top: 1.75rem; margin-bottom: .5rem; }
+
+p { margin-bottom: 1rem; }
+a { color: var(--marianne); text-underline-offset: 3px; }
+a:hover { color: var(--marianne-dark); }
+:focus-visible { outline: 3px solid var(--marianne); outline-offset: 2px; }
+
+.container { max-width: var(--maxw); margin-inline: auto; padding-inline: 1.25rem; }
+.prose { max-width: var(--maxw-prose); }
+
+/* ---------- Signature : le tampon ---------- */
+.tampon {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--tampon);
+  border: 2.5px solid var(--tampon);
+  border-radius: 4px;
+  padding: .3rem .7rem;
+  transform: rotate(-2deg);
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='40'%3E%3Cfilter id='g'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .92 0'/%3E%3C/filter%3E%3Crect width='120' height='40' fill='white' filter='url(%23g)'/%3E%3C/svg%3E");
+  mask-size: cover;
+}
+.tampon--bleu { color: var(--marianne); border-color: var(--marianne); }
+.tampon--vert { color: var(--valide); border-color: var(--valide); }
+
+/* ---------- Header / footer ---------- */
+.site-header {
+  border-bottom: 1px solid var(--ligne);
+  background: var(--papier);
+}
+.site-header .container {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-block: .9rem; gap: 1rem; flex-wrap: wrap;
+}
+.logo {
+  font-family: var(--font-display); font-weight: 900; font-size: 1.3rem;
+  text-decoration: none; color: var(--encre);
+}
+.logo span { color: var(--marianne); }
+.site-nav { display: flex; gap: 1.25rem; font-size: .95rem; flex-wrap: wrap; }
+.site-nav a { text-decoration: none; color: var(--encre); font-weight: 600; }
+.site-nav a:hover { color: var(--marianne); }
+
+.site-footer {
+  margin-top: 5rem; border-top: 1px solid var(--ligne);
+  padding-block: 2rem; font-size: .875rem; color: var(--grise);
+}
+.site-footer a { color: var(--grise); }
+
+/* ---------- Boutons ---------- */
+.btn {
+  display: inline-block; font-family: var(--font-display); font-weight: 700;
+  text-decoration: none; border-radius: 6px; padding: .8rem 1.5rem;
+  border: 2px solid transparent; cursor: pointer; font-size: 1rem;
+}
+.btn--primaire { background: var(--marianne); color: #fff; }
+.btn--primaire:hover { background: var(--marianne-dark); color: #fff; }
+.btn--tampon { background: var(--tampon); color: #fff; }
+.btn--tampon:hover { background: #A00E19; color: #fff; }
+.btn--ghost { border-color: var(--encre); color: var(--encre); }
+
+/* ---------- Hero deux portes ---------- */
+.hero { padding-block: 4rem 3rem; }
+.hero p.sous-titre { font-size: 1.2rem; color: var(--grise); max-width: 38rem; margin-top: 1rem; }
+.portes {
+  display: grid; gap: 1.25rem; margin-top: 2.5rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+.porte {
+  background: #fff; border: 1px solid var(--ligne); border-radius: 10px;
+  padding: 1.75rem; display: flex; flex-direction: column; gap: .75rem;
+  border-top: 5px solid var(--marianne);
+}
+.porte--impaye { border-top-color: var(--tampon); }
+.porte h2 { margin-top: 0; }
+.porte .btn { margin-top: auto; align-self: flex-start; }
+
+/* ---------- Formulaire (générateur) ---------- */
+.formulaire {
+  background: #fff; border: 1px solid var(--ligne); border-radius: 10px;
+  padding: 2rem; margin-block: 2rem;
+}
+.formulaire fieldset { border: none; padding: 0; margin-bottom: 1.75rem; }
+.formulaire legend {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.05rem;
+  margin-bottom: .75rem; padding-top: .5rem;
+}
+.champ { margin-bottom: 1rem; }
+.champ label { display: block; font-weight: 600; font-size: .92rem; margin-bottom: .3rem; }
+.champ input, .champ textarea, .champ select {
+  width: 100%; padding: .65rem .75rem; font: inherit;
+  border: 1.5px solid var(--ligne); border-radius: 6px; background: var(--papier);
+}
+.champ input:focus, .champ textarea:focus { border-color: var(--marianne); }
+.grille-2 { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+
+/* ---------- Cartes articles / comparatifs ---------- */
+.grille-cartes {
+  display: grid; gap: 1.25rem; margin-top: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+.carte {
+  background: #fff; border: 1px solid var(--ligne); border-radius: 10px;
+  padding: 1.5rem;
+}
+.carte h3 { margin-top: .5rem; }
+.carte a { text-decoration: none; color: var(--encre); }
+.carte a:hover h3 { color: var(--marianne); }
+.carte .meta { font-size: .82rem; color: var(--grise); }
+
+/* ---------- Encadrés dans les articles ---------- */
+.encadre {
+  border-left: 4px solid var(--marianne); background: #fff;
+  padding: 1rem 1.25rem; margin-block: 1.5rem; border-radius: 0 8px 8px 0;
+}
+.encadre--alerte { border-left-color: var(--tampon); }
+
+.mention-affiliation {
+  font-size: .82rem; color: var(--grise); border: 1px dashed var(--ligne);
+  padding: .6rem .9rem; border-radius: 6px; margin-block: 1rem;
+}
+
+/* ---------- Tableaux ---------- */
+table { width: 100%; border-collapse: collapse; margin-block: 1.5rem; font-size: .95rem; }
+th, td { text-align: left; padding: .6rem .75rem; border-bottom: 1px solid var(--ligne); }
+th { font-family: var(--font-display); background: #fff; }

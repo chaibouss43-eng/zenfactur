@@ -1,0 +1,53 @@
+---
+import '../styles/global.css';
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{title} — Zenfactur</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet" />
+  <link rel="sitemap" href="/sitemap-index.xml" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <a class="logo" href="/">Zen<span>factur</span>.fr</a>
+      <nav class="site-nav" aria-label="Navigation principale">
+        <a href="/guides/">Guides</a>
+        <a href="/comparatif/">Comparatifs</a>
+        <a href="/outils/">Outils gratuits</a>
+        <a href="/mise-en-demeure/">Mise en demeure</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>Zenfactur.fr aide les artisans et TPE à passer à la facturation électronique et à se faire payer.
+      Certains liens vers des logiciels sont des liens d'affiliation : ils ne changent rien au prix pour vous
+      et financent ce site indépendant.</p>
+      <p>
+        <a href="/a-propos/">À propos</a> ·
+        <a href="/mentions-legales/">Mentions légales</a> ·
+        <a href="/confidentialite/">Confidentialité</a>
+      </p>
+      <p>Les informations publiées ici sont générales et ne constituent pas un conseil juridique individualisé.</p>
+    </div>
+  </footer>
+</body>
+</html>
