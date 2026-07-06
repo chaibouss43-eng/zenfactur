@@ -31,6 +31,39 @@ import Base from '../layouts/Base.astro';
     </div>
   </section>
 
+  <div class="chiffres">
+    <div><span class="valeur">40&nbsp;€</span><span class="legende">d'indemnité due sur chaque facture B2B en retard — que presque personne ne réclame</span></div>
+    <div><span class="valeur">1 sur 4</span><span class="legende">des défaillances de petites entreprises est liée aux retards de paiement</span></div>
+    <div><span class="valeur">Sept. 2027</span><span class="legende">date limite pour émettre vos factures au format électronique</span></div>
+  </div>
+
+  <section>
+    <h2>Votre mise en demeure en 3 étapes</h2>
+    <div class="etapes">
+      <div class="etape">
+        <span class="num">1</span>
+        <h3>Répondez aux questions</h3>
+        <p>Vos coordonnées, celles de votre client, la facture concernée. 10 minutes, montre en main. Aperçu gratuit avant tout paiement.</p>
+      </div>
+      <div class="etape">
+        <span class="num">2</span>
+        <h3>Payez 49 € — une fois</h3>
+        <p>Paiement sécurisé par Stripe. Pas d'abonnement, pas de compte à créer, pas de frais cachés.</p>
+      </div>
+      <div class="etape">
+        <span class="num">3</span>
+        <h3>Envoyez en recommandé</h3>
+        <p>Téléchargez votre lettre en PDF, signez-la, envoyez-la en recommandé avec accusé de réception. On vous explique la suite, gratuitement.</p>
+      </div>
+    </div>
+    <div class="reassurance" style="margin-top:1.5rem;">
+      <div class="item">Vos données ne quittent jamais votre navigateur — rien n'est stocké sur nos serveurs</div>
+      <div class="item">Mentions et fondements légaux adaptés à votre cas (client pro ou particulier)</div>
+      <div class="item">Intérêts de retard et indemnité de 40 € intégrés au bon endroit</div>
+      <div class="item">Guides gratuits pour la suite, jusqu'à l'injonction de payer</div>
+    </div>
+  </section>
+
   <section>
     <h2>Outils gratuits</h2>
     <div class="grille-cartes">
@@ -48,11 +81,39 @@ import Base from '../layouts/Base.astro';
           <p>Indy, Abby, Qonto : lequel est vraiment gratuit et conforme à la réforme, selon votre profil.</p>
         </a>
       </div>
+      <div class="carte">
+        <a href="/guides/">
+          <span class="tampon tampon--bleu">Guides</span>
+          <h3>Tous nos guides pratiques</h3>
+          <p>Relances, injonction de payer, réforme 2026-2027 : des réponses concrètes, écrites pour des artisans.</p>
+        </a>
+      </div>
     </div>
   </section>
 
-  <section>
-    <h2>Derniers guides</h2>
-    <p><a href="/guides/">Voir tous les guides →</a></p>
+  <section class="faq" style="margin-top:3rem;">
+    <h2>Questions fréquentes</h2>
+    <details>
+      <summary>Une mise en demeure faite en ligne a-t-elle une valeur juridique ?</summary>
+      <p>Oui. La loi n'exige pas qu'elle soit rédigée par un avocat : elle doit contenir certaines
+      mentions précises et être envoyée en recommandé avec accusé de réception. Notre générateur
+      intègre toutes ces mentions, adaptées à votre situation.</p>
+    </details>
+    <details>
+      <summary>Que se passe-t-il si mon client ne paie toujours pas ?</summary>
+      <p>La mise en demeure est le préalable à l'injonction de payer, une procédure judiciaire
+      simple (~35 € entre professionnels, sans avocat). Notre guide gratuit vous accompagne pas à pas.</p>
+    </details>
+    <details>
+      <summary>Mes informations sont-elles stockées quelque part ?</summary>
+      <p>Non. Les données que vous saisissez restent dans votre navigateur et servent uniquement à
+      générer votre document. Seul le paiement transite par Stripe, prestataire certifié.</p>
+    </details>
+    <details>
+      <summary>Suis-je concerné par la facturation électronique ?</summary>
+      <p>Si vous êtes une entreprise établie en France assujettie à la TVA — y compris
+      micro-entrepreneur en franchise de TVA — oui. La réception est déjà obligatoire, l'émission
+      le devient en septembre 2027 pour les TPE/PME. Notre guide fait le point selon votre statut.</p>
+    </details>
   </section>
 </Base>
