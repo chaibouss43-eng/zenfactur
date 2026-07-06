@@ -1,12 +1,43 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Politique de confidentialité" description="Politique de confidentialité et données personnelles de Zenfactur.fr.">
+<Base title="Politique de confidentialité" description="Politique de confidentialité et protection des données personnelles de Zenfactur.fr.">
   <article class="prose" style="margin-top:2.5rem;">
-    <h1>Confidentialité</h1>
-    <p><em>[Points clés à rédiger : les données du générateur de mise en demeure ne quittent
-    jamais votre navigateur (sessionStorage) et ne sont pas stockées sur nos serveurs ;
-    paiement traité par Stripe ; pas de cookies publicitaires ; liens d'affiliation avec
-    cookies déposés par les partenaires (à détailler).]</em></p>
+    <h1>Politique de confidentialité</h1>
+    <p>Dernière mise à jour : juillet 2026</p>
+
+    <h2>Le principe : vos données restent chez vous</h2>
+    <p>Le générateur de mise en demeure et le calculateur d'intérêts fonctionnent
+    <strong>entièrement dans votre navigateur</strong>. Les informations que vous
+    saisissez (identités, montants, factures) ne sont ni transmises ni stockées sur nos
+    serveurs : elles servent uniquement à générer votre document, localement, et
+    disparaissent à la fermeture de votre session.</p>
+
+    <h2>Paiement</h2>
+    <p>Les paiements sont traités par <strong>Stripe</strong> (Stripe Payments Europe Ltd),
+    prestataire certifié PCI-DSS. Zenfactur n'a jamais accès à vos données bancaires.
+    Stripe collecte les informations nécessaires à la transaction conformément à sa
+    propre politique de confidentialité :
+    <a href="https://stripe.com/fr/privacy" rel="nofollow">stripe.com/fr/privacy</a>.
+    Nous conservons les justificatifs de transaction (montant, date, email de reçu)
+    conformément à nos obligations comptables et fiscales.</p>
+
+    <h2>Email de contact</h2>
+    <p>Si vous nous écrivez à contact@zenfactur.fr, votre adresse et votre message sont
+    utilisés uniquement pour vous répondre, et ne sont ni partagés ni utilisés à des fins
+    commerciales.</p>
+
+    <h2>Cookies et mesure d'audience</h2>
+    <p>Zenfactur ne dépose pas de cookies publicitaires. Si vous cliquez sur un lien
+    d'affiliation, le site partenaire peut déposer ses propres cookies afin d'attribuer
+    votre visite, conformément à sa propre politique.</p>
+
+    <h2>Vos droits</h2>
+    <p>Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de
+    suppression des données vous concernant. Le site ne stockant pas vos données de
+    formulaire, ces droits concernent essentiellement les échanges par email et les
+    justificatifs de paiement. Pour l'exercer :
+    <a href="mailto:contact@zenfactur.fr">contact@zenfactur.fr</a>.
+    Vous pouvez également saisir la CNIL (<a href="https://www.cnil.fr" rel="nofollow">cnil.fr</a>).</p>
   </article>
 </Base>
