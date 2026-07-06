@@ -1,0 +1,109 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Générateur d'email de relance de facture impayée (gratuit)"
+  description="Générez en 30 secondes un email de relance professionnel pour facture impayée : relance amiable, ferme ou dernier avertissement. Gratuit, sans inscription."
+>
+  <section class="hero" style="padding-bottom:1rem;">
+    <span class="tampon tampon--vert">Outil gratuit</span>
+    <h1 style="margin-top:1rem;">Générateur d'email de relance</h1>
+    <p class="sous-titre">Choisissez le ton, remplissez 5 champs, copiez votre email.
+    Gratuit, sans inscription — vos données ne quittent pas votre navigateur.</p>
+  </section>
+
+  <form class="formulaire" id="form-relance">
+    <fieldset>
+      <legend>Le ton de la relance</legend>
+      <div class="champ">
+        <select id="r-ton">
+          <option value="amiable">Relance amiable (1ʳᵉ relance, dès J+3)</option>
+          <option value="ferme">Relance ferme (2ᵉ relance, rappel des pénalités)</option>
+          <option value="dernier">Dernier avertissement (avant mise en demeure)</option>
+        </select>
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Les informations</legend>
+      <div class="grille-2">
+        <div class="champ"><label for="r-prenom">Prénom / nom du contact</label><input id="r-prenom" placeholder="M. Martin" required /></div>
+        <div class="champ"><label for="r-num">N° de facture</label><input id="r-num" placeholder="2026-042" required /></div>
+        <div class="champ"><label for="r-montant">Montant TTC (€)</label><input id="r-montant" type="number" step="0.01" required /></div>
+        <div class="champ"><label for="r-echeance">Date d'échéance</label><input id="r-echeance" type="date" required /></div>
+        <div class="champ"><label for="r-vous">Votre nom / entreprise</label><input id="r-vous" placeholder="Dupont Plomberie" required /></div>
+        <div class="champ" id="champ-promesse" style="display:none;"><label for="r-promesse">Date de paiement promise (optionnel)</label><input id="r-promesse" type="date" /></div>
+      </div>
+    </fieldset>
+    <button type="button" class="btn btn--primaire" id="btn-generer">Générer mon email</button>
+  </form>
+
+  <div id="resultat-bloc" style="display:none; margin-block:2rem;">
+    <h2 style="margin-top:0;">Votre email</h2>
+    <div class="formulaire" style="margin-block:1rem;">
+      <p style="margin-bottom:.5rem;"><strong>Objet :</strong> <span id="r-objet"></span></p>
+      <hr style="border:none; border-top:1px solid var(--ligne); margin-block:1rem;"/>
+      <div id="r-corps" style="white-space:pre-wrap;"></div>
+    </div>
+    <button type="button" class="btn btn--ghost" id="btn-copier">📋 Copier l'email</button>
+    <span id="copie-ok" style="display:none; color:var(--valide); font-weight:700; margin-left:1rem;">Copié !</span>
+
+    <div class="encadre encadre--alerte" style="margin-top:2rem;">
+      <strong>Déjà 2 relances sans réponse ?</strong> L'étape suivante est la mise en demeure
+      en recommandé — c'est elle qui a une valeur juridique et qui débloque la plupart des
+      dossiers. <a href="/mise-en-demeure/">Générez-la en 10 minutes</a>, avec le décompte
+      chiffré de votre créance (pénalités + indemnité de 40 €).
+    </div>
+  </div>
+
+  <section class="prose">
+    <h2>Le bon timing des relances</h2>
+    <p>J+3 après l'échéance : relance amiable. J+8 : appel téléphonique. J+15 : relance ferme
+    avec rappel des pénalités légales. J+30 : mise en demeure en recommandé AR. Pour la méthode
+    complète, consultez notre guide
+    <a href="/guides/client-ne-paie-pas-facture/">client qui ne paie pas : que faire étape par étape</a>
+    et nos <a href="/guides/relance-facture-impayee-modeles-email/">3 modèles de relance commentés</a>.</p>
+  </section>
+
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const frd = (iso) => { const p = (iso||'').split('-'); return p.length===3 ? `${p[2]}/${p[1]}/${p[0]}` : iso; };
+
+    $('r-ton').addEventListener('change', () => {
+      $('champ-promesse').style.display = $('r-ton').value === 'amiable' ? 'none' : 'block';
+    });
+
+    $('btn-generer').addEventListener('click', () => {
+      if (!$('form-relance').reportValidity()) return;
+      const ton = $('r-ton').value;
+      const nom = $('r-prenom').value.trim();
+      const num = $('r-num').value.trim();
+      const montant = parseFloat($('r-montant').value).toFixed(2).replace('.', ',');
+      const ech = frd($('r-echeance').value);
+      const vous = $('r-vous').value.trim();
+      const promesse = $('r-promesse').value ? frd($('r-promesse').value) : null;
+
+      let objet = '', corps = '';
+      if (ton === 'amiable') {
+        objet = `Facture n° ${num} — rappel d'échéance`;
+        corps = `Bonjour ${nom},\n\nSauf erreur de ma part, la facture n° ${num} d'un montant de ${montant} € TTC, arrivée à échéance le ${ech}, n'a pas encore été réglée.\n\nVous trouverez la facture en pièce jointe. S'il s'agit d'un simple oubli, je vous remercie de procéder au règlement. Si le paiement est déjà parti, ne tenez pas compte de ce message.\n\nBien cordialement,\n${vous}`;
+      } else if (ton === 'ferme') {
+        objet = `Facture n° ${num} impayée — 2ᵉ relance`;
+        corps = `Bonjour ${nom},\n\nMalgré ma précédente relance${promesse ? ` et votre engagement de règlement au ${promesse}` : ''}, la facture n° ${num} de ${montant} € TTC, échue le ${ech}, demeure impayée.\n\nJe vous rappelle qu'entre professionnels, conformément à l'article L441-10 du Code de commerce, tout retard de paiement entraîne de plein droit l'application de pénalités de retard ainsi qu'une indemnité forfaitaire de recouvrement de 40 €.\n\nJe vous remercie de régulariser la situation sous 8 jours.\n\nCordialement,\n${vous}`;
+      } else {
+        objet = `Facture n° ${num} — dernier avertissement avant mise en demeure`;
+        corps = `Bonjour ${nom},\n\nMalgré mes relances successives${promesse ? ` et votre engagement de règlement au ${promesse}` : ''}, la facture n° ${num} de ${montant} € TTC, échue le ${ech}, reste impayée à ce jour.\n\nSans règlement intégral sous 5 jours, je me verrai contraint de vous adresser une mise en demeure par lettre recommandée avec accusé de réception, préalable à une procédure d'injonction de payer. Les pénalités de retard et l'indemnité forfaitaire de 40 € prévues par le Code de commerce seront alors intégrées au décompte, ainsi que les frais de recouvrement.\n\nJe reste disponible pour trouver une solution rapide.\n\n${vous}`;
+      }
+      $('r-objet').textContent = objet;
+      $('r-corps').textContent = corps;
+      $('resultat-bloc').style.display = 'block';
+      $('resultat-bloc').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    $('btn-copier').addEventListener('click', async () => {
+      const texte = `Objet : ${$('r-objet').textContent}\n\n${$('r-corps').textContent}`;
+      await navigator.clipboard.writeText(texte);
+      $('copie-ok').style.display = 'inline';
+      setTimeout(() => $('copie-ok').style.display = 'none', 2500);
+    });
+  </script>
+</Base>

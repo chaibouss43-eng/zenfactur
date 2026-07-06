@@ -1,0 +1,45 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Exemple de mise en demeure pour facture impayée (modèle commenté)"
+  description="Un exemple concret de mise en demeure conforme : mentions obligatoires, décompte chiffré des pénalités, fondements légaux. Voyez à quoi ressemble le document avant de créer le vôtre."
+>
+  <section class="hero" style="padding-bottom:1rem;">
+    <span class="tampon">Exemple</span>
+    <h1 style="margin-top:1rem;">À quoi ressemble une mise en demeure conforme ?</h1>
+    <p class="sous-titre">Voici un exemple généré avec des données fictives : un plombier
+    réclame le paiement d'une facture de 2 450 € à une SARL. Chaque élément a un rôle précis.</p>
+  </section>
+
+  <div class="split-2">
+    <div>
+      <img src="/exemple-mise-en-demeure.png" alt="Exemple de mise en demeure : en-tête officiel, mention recommandé, décompte chiffré de la créance avec pénalités et indemnité de 40 euros" style="width:100%; border:1px solid var(--ligne); border-radius:8px; box-shadow:0 2px 12px rgba(0,0,0,.08);" loading="lazy" />
+      <p style="font-size:.82rem; color:var(--grise); margin-top:.5rem;">Exemple filigrané, données fictives. La version générée pour vous est livrée sans filigrane, avec une page 2 « Mode d'emploi ».</p>
+    </div>
+    <div>
+      <h2 style="margin-top:0;">Ce que contient ce document</h2>
+      <div class="reassurance" style="grid-template-columns:1fr;">
+        <div class="item"><strong>L'en-tête formel</strong> — identification immédiate de la nature du courrier et de la référence de la facture.</div>
+        <div class="item"><strong>La mention « recommandé avec AR »</strong> — encadrée, elle signale que la lettre a une portée juridique.</div>
+        <div class="item"><strong>Le rappel des faits daté</strong> — facture, montant, échéance et nombre de jours de retard calculé.</div>
+        <div class="item"><strong>Le décompte chiffré</strong> — principal + pénalités de retard calculées au jour près + indemnité forfaitaire de 40 € = total exigible. C'est lui qui fait réagir le débiteur.</div>
+        <div class="item"><strong>Les fondements légaux</strong> — articles L441-10 et D441-5 du Code de commerce (client pro) ou 1344-1 du Code civil (particulier).</div>
+        <div class="item"><strong>L'annonce des suites</strong> — l'injonction de payer, nommée précisément : le débiteur comprend que vous connaissez la procédure.</div>
+      </div>
+      <div class="encadre" style="border-left-color:var(--tampon); margin-top:1.5rem;">
+        <strong>Créez la vôtre en 10 minutes.</strong> Répondez aux questions, vérifiez
+        l'aperçu gratuit, téléchargez votre document personnalisé (2 pages, avec le mode
+        d'emploi complet) pour 49 €.
+        <p style="margin:.75rem 0 0;"><a class="btn btn--tampon" href="/mise-en-demeure/">Créer ma mise en demeure</a></p>
+      </div>
+    </div>
+  </div>
+
+  <section class="prose">
+    <h2>Pour aller plus loin</h2>
+    <p>Les mentions obligatoires en détail : <a href="/guides/mise-en-demeure-facture-impayee/">notre guide complet de la mise en demeure</a>.
+    La procédure de A à Z : <a href="/guides/client-ne-paie-pas-facture/">client qui ne paie pas, que faire</a>.
+    Et si la lettre reste sans effet : <a href="/guides/injonction-de-payer/">l'injonction de payer expliquée pas à pas</a>.</p>
+  </section>
+</Base>

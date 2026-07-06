@@ -75,6 +75,13 @@ import Base from '../layouts/Base.astro';
         </a>
       </div>
       <div class="carte">
+        <a href="/outils/generateur-relance/">
+          <span class="tampon tampon--vert">Gratuit</span>
+          <h3>Générateur d'email de relance</h3>
+          <p>Relance amiable, ferme ou dernier avertissement : votre email prêt en 30 secondes.</p>
+        </a>
+      </div>
+      <div class="carte">
         <a href="/comparatif/logiciel-facturation-gratuit/">
           <span class="tampon tampon--vert">Comparatif</span>
           <h3>Quel logiciel de facturation gratuit ?</h3>
@@ -116,4 +123,19 @@ import Base from '../layouts/Base.astro';
       le devient en septembre 2027 pour les TPE/PME. Notre guide fait le point selon votre statut.</p>
     </details>
   </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Une mise en demeure faite en ligne a-t-elle une valeur juridique ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Oui. La loi n'exige pas qu'elle soit rédigée par un avocat : elle doit contenir certaines mentions précises et être envoyée en recommandé avec accusé de réception." } },
+      { "@type": "Question", "name": "Que se passe-t-il si mon client ne paie toujours pas ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "La mise en demeure est le préalable à l'injonction de payer, une procédure judiciaire simple (~35 € entre professionnels, sans avocat)." } },
+      { "@type": "Question", "name": "Mes informations sont-elles stockées quelque part ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Non. Les données saisies restent dans votre navigateur et servent uniquement à générer votre document. Seul le paiement transite par Stripe." } },
+      { "@type": "Question", "name": "Suis-je concerné par la facturation électronique ?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Si vous êtes une entreprise établie en France assujettie à la TVA — y compris micro-entrepreneur en franchise de TVA — oui. L'émission devient obligatoire en septembre 2027 pour les TPE/PME." } }
+    ]
+  })} />
 </Base>
