@@ -137,7 +137,22 @@ import Base from '../layouts/Base.astro';
     </p>
   </form>
 
-  <div id="apercu" class="formulaire" style="display:none; white-space:pre-wrap; font-size:.95rem;"></div>
+  <div id="apercu-bloc" style="display:none; margin-block:2rem;">
+    <h2 style="margin-top:0;">Votre lettre — aperçu</h2>
+    <iframe id="apercu-pdf" title="Aperçu de votre mise en demeure" style="width:100%; height:75vh; border:1px solid var(--ligne); border-radius:10px; background:#fff;"></iframe>
+    <p style="font-size:.85rem; color:var(--grise); margin-top:.5rem;">
+      L'aperçu ne s'affiche pas ? <a id="apercu-lien" href="#" target="_blank" rel="noopener">Ouvrir l'aperçu dans un nouvel onglet</a>.
+    </p>
+    <div class="encadre" style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center; justify-content:space-between; border-left-color:var(--valide);">
+      <div style="flex:1; min-width:240px;">
+        <strong>✓ Ceci est votre lettre.</strong><br/>
+        La version finale est livrée <strong>sans filigrane</strong>, accompagnée de la
+        <strong>page 2 « Mode d'emploi »</strong> : envoi, délais, checklist du dossier de preuve
+        et marche à suivre jusqu'à l'injonction de payer.
+      </div>
+      <button type="button" class="btn btn--tampon" id="btn-payer-2">Obtenir ma lettre — 49&nbsp;€</button>
+    </div>
+  </div>
 
   <section class="prose">
     <h2>Questions fréquentes</h2>
@@ -151,49 +166,170 @@ import Base from '../layouts/Base.astro';
     judiciaire simple et peu coûteuse. Notre guide vous explique la suite.</p>
   </section>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script>
     const $ = (id) => document.getElementById(id);
     const val = (id) => ($(id) && 'value' in $(id) ? $(id).value.trim() : '');
-
-    function construireLettre(filigrane) {
-      const dateJour = new Date().toLocaleDateString('fr-FR');
-      const montant = parseFloat(val('f-montant') || '0').toFixed(2);
-      const estPro = val('d-type') === 'pro';
-      return [
-        `${val('c-nom')}\n${val('c-adresse')}\nSIRET : ${val('c-siret')}`,
-        `\n${val('d-nom')}\n${val('d-adresse')}`,
-        `\nLe ${dateJour}`,
-        `\nLettre recommandée avec accusé de réception`,
-        `\nObjet : MISE EN DEMEURE — facture n° ${val('f-num')} impayée`,
-        `\nMadame, Monsieur,`,
-        `\nSauf erreur de notre part, la facture n° ${val('f-num')} du ${val('f-date')}, d'un montant de ${montant} € TTC, relative à ${val('f-objet')}, demeure impayée à ce jour malgré son échéance fixée au ${val('f-echeance')}.`,
-        val('relances') ? `\nNous vous avons déjà relancé : ${val('relances')}.` : '',
-        `\nEn conséquence, nous vous mettons en demeure de nous régler la somme de ${montant} € TTC sous huit (8) jours à compter de la réception de la présente.`,
-        estPro
-          ? `\nConformément à l'article L441-10 du Code de commerce, cette somme est majorée des pénalités de retard au taux prévu à nos conditions, ainsi que de l'indemnité forfaitaire de recouvrement de 40 € prévue à l'article D441-5 du même code.`
-          : `\nConformément à l'article 1344-1 du Code civil, la présente mise en demeure fait courir les intérêts au taux légal.`,
-        `\nÀ défaut de règlement dans ce délai, nous saisirons la juridiction compétente, notamment par voie d'injonction de payer, sans autre avis.`,
-        `\nVeuillez agréer, Madame, Monsieur, nos salutations distinguées.`,
-        `\n${val('c-nom')}`,
-        filigrane ? `\n\n===== APERÇU NON VALABLE — VERSION FILIGRANÉE =====` : '',
-      ].filter(Boolean).join('\n');
-    }
-
-    $('btn-apercu').addEventListener('click', () => {
-      if (!document.getElementById('form-md').reportValidity()) return;
-      const zone = $('apercu');
-      zone.textContent = construireLettre(true);
-      zone.style.display = 'block';
-      zone.scrollIntoView({ behavior: 'smooth' });
-    });
-
-    $('btn-payer').addEventListener('click', () => {
-      if (!document.getElementById('form-md').reportValidity()) return;
+    const collecter = () => {
       const donnees = {};
       new FormData(document.getElementById('form-md')).forEach((v, k) => (donnees[k] = v));
-      sessionStorage.setItem('zenfactur-md', JSON.stringify(donnees));
-      // REMPLACER par votre Payment Link Stripe :
-      window.location.href = 'https://buy.stripe.com/REMPLACER_MOI';
+      return donnees;
+    };
+
+    // ===== Générateur PDF — page 1 (identique à la version finale) =====
+    function genererPage1(d, apercu) {
+      const BLEU = [0, 0, 145], ROUGE = [193, 18, 31], GRIS = [107, 107, 112], NOIR = [22, 22, 29];
+      const M = 20, W = 210 - 2 * M;
+      const TAUX_PENALITES = 12.35; // BCE + 10 pts — à actualiser chaque semestre
+      const frDate = (iso) => { const p = (iso || '').split('-'); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : iso; };
+      const eur = (n) => n.toFixed(2).replace('.', ',') + ' \u20AC';
+      const montant = parseFloat(d['f-montant'] || '0');
+      const estPro = d['d-type'] === 'pro';
+      const auj = new Date();
+      const dateJour = auj.toLocaleDateString('fr-FR');
+      const ech = new Date(d['f-echeance']);
+      const joursRetard = Math.max(0, Math.floor((auj - ech) / 86400000));
+      const penalites = estPro ? montant * (TAUX_PENALITES / 100) * (joursRetard / 365) : 0;
+      const indemnite = estPro ? 40 : 0;
+      const total = montant + penalites + indemnite;
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+
+      doc.setFillColor(...BLEU); doc.rect(0, 0, 210, 26, 'F');
+      doc.setTextColor(255, 255, 255);
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(17);
+      doc.text('MISE EN DEMEURE', M, 12);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9);
+      doc.text('Avant poursuites \u2014 article 1344 du Code civil', M, 18.5);
+      doc.text(`R\u00e9f. : facture n\u00b0 ${d['f-num']}`, 210 - M, 11, { align: 'right' });
+      doc.text(`Le ${dateJour}`, 210 - M, 16.5, { align: 'right' });
+      doc.setTextColor(...NOIR);
+
+      let y = 36;
+      doc.setFontSize(8); doc.setTextColor(...GRIS); doc.setFont('helvetica', 'bold');
+      doc.text('EXP\u00c9DITEUR (CR\u00c9ANCIER)', M, y);
+      doc.setTextColor(...NOIR); doc.setFontSize(10);
+      doc.text(d['c-nom'], M, y + 5.5);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.text(doc.splitTextToSize(d['c-adresse'], 82), M, y + 10.5);
+      doc.text(`SIRET : ${d['c-siret']}`, M, y + 20);
+
+      doc.setDrawColor(...NOIR); doc.setLineWidth(0.35);
+      doc.rect(115, y - 4, 75, 27);
+      doc.setFontSize(8); doc.setTextColor(...GRIS); doc.setFont('helvetica', 'bold');
+      doc.text('DESTINATAIRE (D\u00c9BITEUR)', 118, y);
+      doc.setTextColor(...NOIR); doc.setFontSize(10);
+      doc.text(d['d-nom'], 118, y + 5.5);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9.5);
+      doc.text(doc.splitTextToSize(d['d-adresse'], 69), 118, y + 10.5);
+
+      y = 70;
+      doc.setDrawColor(...ROUGE); doc.setLineWidth(0.6);
+      doc.setTextColor(...ROUGE); doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+      const mention = 'LETTRE RECOMMAND\u00c9E AVEC ACCUS\u00c9 DE R\u00c9CEPTION';
+      doc.rect(M, y - 5.5, doc.getTextWidth(mention) + 8, 8);
+      doc.text(mention, M + 4, y);
+      doc.setTextColor(...NOIR);
+
+      y = 82;
+      const para = (txt, opts = {}) => {
+        doc.setFont('helvetica', opts.gras ? 'bold' : 'normal');
+        doc.setFontSize(opts.taille || 10);
+        const lignes = doc.splitTextToSize(txt, W);
+        doc.text(lignes, M, y);
+        y += lignes.length * 4.6 + (opts.apres ?? 3);
+      };
+
+      para('Madame, Monsieur,');
+      para(`Sauf erreur de notre part, la facture n\u00b0 ${d['f-num']} \u00e9mise le ${frDate(d['f-date'])}, d'un montant de ${eur(montant)} TTC, relative \u00e0 ${d['f-objet']}, demeure impay\u00e9e \u00e0 ce jour malgr\u00e9 son \u00e9ch\u00e9ance fix\u00e9e au ${frDate(d['f-echeance'])} \u2014 soit ${joursRetard} jours de retard.`);
+      if (d['relances']) para(`Cette situation persiste malgr\u00e9 nos relances : ${d['relances']}.`);
+      para(`En cons\u00e9quence, nous vous mettons en demeure de proc\u00e9der au r\u00e8glement int\u00e9gral des sommes dues, dont le d\u00e9compte figure ci-dessous, sous huit (8) jours \u00e0 compter de la r\u00e9ception de la pr\u00e9sente.`, { gras: true });
+
+      y += 1;
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...BLEU);
+      doc.text(`D\u00c9COMPTE DE LA CR\u00c9ANCE AU ${dateJour}`, M, y);
+      doc.setTextColor(...NOIR);
+      y += 3;
+      const row = (lib, valTxt, opts = {}) => {
+        const h = 7.5;
+        if (opts.total) { doc.setFillColor(...BLEU); doc.rect(M, y, W, h, 'F'); doc.setTextColor(255, 255, 255); }
+        else { doc.setDrawColor(210, 210, 215); doc.setLineWidth(0.25); doc.rect(M, y, W, h); }
+        doc.setFont('helvetica', opts.total ? 'bold' : 'normal'); doc.setFontSize(9.5);
+        doc.text(lib, M + 3, y + 5);
+        doc.setFont('helvetica', 'bold');
+        doc.text(valTxt, 210 - M - 3, y + 5, { align: 'right' });
+        if (opts.total) doc.setTextColor(...NOIR);
+        y += h;
+      };
+      row(`Principal \u2014 facture n\u00b0 ${d['f-num']}`, eur(montant));
+      if (estPro) {
+        row(`P\u00e9nalit\u00e9s de retard (${joursRetard} j. au taux de ${TAUX_PENALITES.toFixed(2).replace('.', ',')} %/an \u2014 art. L441-10 C. com.)`, eur(penalites));
+        row(`Indemnit\u00e9 forfaitaire de recouvrement (art. D441-5 C. com.)`, eur(indemnite));
+      }
+      row('TOTAL EXIGIBLE', eur(total), { total: true });
+      if (estPro) {
+        doc.setFont('helvetica', 'italic'); doc.setFontSize(7.5); doc.setTextColor(...GRIS);
+        y += 4;
+        doc.text("P\u00e9nalit\u00e9s arr\u00eat\u00e9es \u00e0 la date de la pr\u00e9sente et continuant de courir jusqu'au complet paiement. Taux applicable sauf stipulation contraire des CGV.", M, y);
+        doc.setTextColor(...NOIR);
+        y += 7;
+      } else { y += 5; }
+
+      para(estPro
+        ? `Nous vous rappelons qu'en application de l'article L441-10 du Code de commerce, les p\u00e9nalit\u00e9s de retard sont exigibles de plein droit, sans qu'un rappel soit n\u00e9cessaire, de m\u00eame que l'indemnit\u00e9 forfaitaire de recouvrement de 40 \u20AC pr\u00e9vue \u00e0 l'article D441-5 du m\u00eame code.`
+        : `Conform\u00e9ment \u00e0 l'article 1344-1 du Code civil, la pr\u00e9sente mise en demeure fait courir les int\u00e9r\u00eats au taux l\u00e9gal sur les sommes dues.`);
+      para(`\u00c0 d\u00e9faut de r\u00e8glement int\u00e9gral dans le d\u00e9lai imparti, nous saisirons sans autre avis la juridiction comp\u00e9tente, notamment par voie d'injonction de payer, l'ensemble des frais de recouvrement \u00e9tant alors \u00e0 votre charge dans les conditions pr\u00e9vues par la loi.`);
+      para(`Le r\u00e8glement peut \u00eatre effectu\u00e9 par virement ou par ch\u00e8que \u00e0 l'ordre de ${d['c-nom']}. Nous restons joignables pour convenir, le cas \u00e9ch\u00e9ant, de modalit\u00e9s de paiement.`);
+      para('Veuillez agr\u00e9er, Madame, Monsieur, nos salutations distingu\u00e9es.', { apres: 10 });
+
+      doc.setFont('helvetica', 'bold'); doc.setFontSize(10);
+      doc.text(d['c-nom'], 210 - M, y, { align: 'right' });
+      y += 5;
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(...GRIS);
+      doc.text('Signature :', 210 - M - 45, y + 4);
+      doc.setTextColor(...NOIR);
+
+      // Pied de page
+      doc.setDrawColor(...GRIS); doc.setLineWidth(0.2);
+      doc.line(M, 285, 210 - M, 285);
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7.5); doc.setTextColor(...GRIS);
+      doc.text(`Document g\u00e9n\u00e9r\u00e9 le ${dateJour} via zenfactur.fr`, M, 290);
+      doc.setTextColor(...NOIR);
+
+      if (apercu) {
+        doc.saveGraphicsState();
+        doc.setGState(new doc.GState({ opacity: 0.13 }));
+        doc.setTextColor(193, 18, 31);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(44);
+        for (let yy = 70; yy <= 280; yy += 85) {
+          doc.text('APER\u00c7U \u2014 NON VALABLE', 105, yy, { align: 'center', angle: 35 });
+        }
+        doc.restoreGraphicsState();
+      }
+      return doc;
+    }
+
+    let apercuUrl = null;
+    $('btn-apercu').addEventListener('click', () => {
+      if (!document.getElementById('form-md').reportValidity()) return;
+      const doc = genererPage1(collecter(), true);
+      const blob = doc.output('blob');
+      if (apercuUrl) URL.revokeObjectURL(apercuUrl);
+      apercuUrl = URL.createObjectURL(blob);
+      $('apercu-pdf').src = apercuUrl;
+      $('apercu-lien').href = apercuUrl;
+      $('apercu-bloc').style.display = 'block';
+      $('apercu-bloc').scrollIntoView({ behavior: 'smooth' });
     });
+
+    const payer = () => {
+      if (!document.getElementById('form-md').reportValidity()) return;
+      sessionStorage.setItem('zenfactur-md', JSON.stringify(collecter()));
+      window.location.href = 'https://buy.stripe.com/aFa5kv44g1RV2w224ieZ200';
+    };
+    $('btn-payer').addEventListener('click', payer);
+    document.addEventListener('click', (e) => { if (e.target && e.target.id === 'btn-payer-2') payer(); });
   </script>
 </Base>
