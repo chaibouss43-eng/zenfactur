@@ -3,7 +3,7 @@ import Base from '../../layouts/Base.astro';
 // REMPLACER les URL ci-dessous par vos liens d'affiliation une fois validés (Affilae/Awin).
 const logiciels = [
   { nom: 'Indy', statut: 'Plateforme Agréée', gratuit: 'Facturation illimitée gratuite', pour: 'Indépendants et micro-entrepreneurs', lien: 'https://www.indy.fr' },
-  { nom: 'Abby', statut: 'Plateforme Agréée', gratuit: 'Devis et factures illimités en formule basique', pour: 'Micro-entrepreneurs', lien: 'https://abby.fr' },
+  { nom: 'Abby', statut: 'Plateforme Agréée + partenaire officiel URSSAF', gratuit: 'Facturation illimitée, e-signature de devis et déclarations URSSAF en offre gratuite', pour: 'Micro-entrepreneurs et indépendants', lien: 'https://c3po.link/QhE5eesYmt' },
   { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: 'https://qonto.com' },
 ];
 ---
@@ -36,7 +36,31 @@ const logiciels = [
       </tbody>
     </table>
 
-    <p><em>[Sections détaillées par logiciel à rédiger, avec limites honnêtes de chaque
-    offre gratuite — c'est ce qui rend le comparatif crédible et différenciant.]</em></p>
+    <h2>Abby — le plus complet en gratuit pour les indépendants</h2>
+    <div class="split-2">
+      <div>
+        <p>Abby coche toutes les cases de la réforme : <strong>Plateforme Agréée immatriculée</strong>
+        (réception, émission et e-reporting gérés automatiquement), et — cas unique —
+        <strong>partenaire officiel de l'URSSAF</strong> : vous télédéclarez votre chiffre d'affaires
+        et payez vos cotisations directement depuis l'outil, pré-remplis à partir de vos factures.</p>
+        <p>L'offre gratuite couvre la facturation illimitée, les devis avec signature électronique
+        et le paiement en ligne. Les limites honnêtes : les fonctions avancées (comptabilité complète,
+        analyse fine, support prioritaire) passent par les offres payantes (12 à 59 €/mois selon le
+        statut), et l'outil vise les indépendants et micro-entrepreneurs — une société avec bilan
+        certifié se tournera plutôt vers un outil de comptabilité complet.</p>
+        <p><a class="btn btn--primaire" href="https://c3po.link/QhE5eesYmt" rel="sponsored nofollow">Essayer Abby gratuitement</a></p>
+      </div>
+      <div style="display:flex; justify-content:center;">
+        <img src="/abby/mockup-facturation.png" alt="Application mobile Abby : liste des factures avec statuts payée, finalisée et en retard" width="240" loading="lazy" style="max-width:240px; height:auto;" />
+      </div>
+    </div>
+
+    <p><em>[Sections Indy et Qonto à rédiger sur le même modèle : points forts réels + limites honnêtes.]</em></p>
+
+    <p style="margin-top:2rem;">
+      <a href="https://c3po.link/QhE5eesYmt" rel="sponsored nofollow">
+        <img src="/abby/banniere-abby.jpg" alt="Abby : 100 000 indépendants ont simplifié leur quotidien — comptabilité et facturation gratuite" style="width:100%; height:auto; border-radius:10px;" loading="lazy" />
+      </a>
+    </p>
   </article>
 </Base>
