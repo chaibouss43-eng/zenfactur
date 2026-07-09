@@ -9,7 +9,13 @@ export async function getStaticPaths() {
 
 const { guide } = Astro.props;
 const { Content } = await render(guide);
+const minutes = Math.max(2, Math.round((guide.body?.split(/\s+/).length || 400) / 220));
+const tous = await getCollection('guides');
+const aLire = tous
+  .filter((g) => g.id !== guide.id && g.data.theme === guide.data.theme && !g.body?.includes('Contenu à rédiger'))
+  .sort((a, b) => a.data.priorite - b.data.priorite)
+  .slice(0, 3);
 ---
-<Article frontmatter={guide.data}>
+<Article frontmatter={guide.data} minutes={minutes} aLire={aLire}>
   <Content />
 </Article>
