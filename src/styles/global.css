@@ -325,3 +325,87 @@ th { font-family: var(--font-display); background: #fff; }
   .frise-ligne { grid-template-columns: 1fr; gap: 1.25rem; }
   .frise-ligne::before { display: none; }
 }
+
+/* ============ PASSE VISUELLE "PREMIUM" ============ */
+
+/* Fond hero : trame papier administratif subtile + halo */
+.hero {
+  position: relative;
+  background:
+    radial-gradient(ellipse 60% 50% at 80% 0%, rgba(0,0,145,.06), transparent 70%),
+    repeating-linear-gradient(0deg, transparent, transparent 31px, rgba(0,0,145,.035) 31px, rgba(0,0,145,.035) 32px);
+  border-radius: 0 0 16px 16px;
+}
+
+/* Surlignage marqueur sur le titre */
+.surligne {
+  background: linear-gradient(180deg, transparent 58%, rgba(193,18,31,.22) 58%, rgba(193,18,31,.22) 92%, transparent 92%);
+  padding-inline: .05em;
+}
+
+/* Cartes : relief et réaction au survol */
+.carte, .porte, .etape {
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  box-shadow: 0 1px 3px rgba(22,22,29,.05);
+}
+.carte:hover, .porte:hover, .etape:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,145,.10);
+  border-color: rgba(0,0,145,.25);
+}
+.porte--impaye:hover { box-shadow: 0 12px 28px rgba(193,18,31,.12); border-color: rgba(193,18,31,.3); }
+
+/* Boutons : relief + flèche animée */
+.btn {
+  box-shadow: 0 2px 6px rgba(22,22,29,.12);
+  transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(22,22,29,.18); }
+.btn:active { transform: translateY(0); }
+.btn--fleche::after { content: " →"; display: inline-block; transition: transform .15s ease; }
+.btn--fleche:hover::after { transform: translateX(4px); }
+
+/* Tampons : encrage au survol */
+.tampon { transition: transform .15s ease; }
+.carte:hover .tampon, .porte:hover .tampon { transform: rotate(0deg) scale(1.04); }
+
+/* Bandeau chiffres : dégradé + coins doux + relief */
+.chiffres {
+  background: linear-gradient(135deg, var(--marianne) 0%, #1a1aae 55%, var(--marianne-dark) 100%);
+  box-shadow: 0 10px 30px rgba(0,0,145,.25);
+  position: relative; overflow: hidden;
+}
+.chiffres::before {
+  content: ""; position: absolute; inset: 0;
+  background: repeating-linear-gradient(45deg, transparent, transparent 18px, rgba(255,255,255,.03) 18px, rgba(255,255,255,.03) 36px);
+}
+.chiffres > div { position: relative; }
+
+/* Sections alternées : respiration visuelle */
+.bande {
+  background: #fff; border-block: 1px solid var(--ligne);
+  margin-inline: calc(50% - 50vw); padding-inline: calc(50vw - 50%);
+  padding-block: 2.5rem; margin-block: 3rem;
+}
+
+/* Icônes des étapes */
+.etape .icone {
+  width: 44px; height: 44px; border-radius: 10px;
+  background: rgba(0,0,145,.08); color: var(--marianne);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: .75rem; font-size: 1.3rem;
+}
+
+/* Footer sombre premium */
+.site-footer {
+  background: var(--encre); color: #b9b9c2;
+  border-top: none; margin-top: 5rem; padding-block: 2.5rem;
+  border-radius: 16px 16px 0 0;
+}
+.site-footer a { color: #d6d6de; }
+.site-footer a:hover { color: #fff; }
+
+/* Apparition au scroll (désactivée si reduced motion) */
+.reveal { opacity: 0; transform: translateY(18px); transition: opacity .5s ease, transform .5s ease; }
+.reveal.vu { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }

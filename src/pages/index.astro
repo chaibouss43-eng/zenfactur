@@ -7,7 +7,7 @@ import Base from '../layouts/Base.astro';
 >
   <section class="hero">
     <span class="tampon tampon--bleu">Artisans &amp; TPE</span>
-    <h1 style="margin-top:1rem;">Vos factures, en règle et payées.</h1>
+    <h1 style="margin-top:1rem;">Vos factures, en règle et <span class="surligne">payées</span>.</h1>
     <p class="sous-titre">
       La facturation électronique devient obligatoire et vos clients paient en retard.
       Zenfactur vous donne les réponses concrètes, sans jargon de comptable.
@@ -19,14 +19,14 @@ import Base from '../layouts/Base.astro';
         <h2>Je passe à la facturation électronique</h2>
         <p>Êtes-vous concerné, à quelle date, avec quel logiciel ? Le point complet
         selon votre métier et votre statut, et les logiciels gratuits qui suffisent.</p>
-        <a class="btn btn--primaire" href="/guides/facturation-electronique-guide-tpe/">Voir le guide complet</a>
+        <a class="btn btn--primaire btn--fleche" href="/guides/facturation-electronique-guide-tpe/">Voir le guide complet</a>
       </div>
       <div class="porte porte--impaye">
         <span class="tampon">Client qui ne paie pas</span>
         <h2>Je veux récupérer mon argent</h2>
         <p>Relances, intérêts de retard, mise en demeure : la marche à suivre étape
         par étape, et votre mise en demeure conforme générée en 10 minutes.</p>
-        <a class="btn btn--tampon" href="/mise-en-demeure/">Créer ma mise en demeure — 49&nbsp;€</a>
+        <a class="btn btn--tampon btn--fleche" href="/mise-en-demeure/">Créer ma mise en demeure — 49&nbsp;€</a>
       </div>
     </div>
   </section>
@@ -61,17 +61,20 @@ import Base from '../layouts/Base.astro';
   <section>
     <h2>Votre mise en demeure en 3 étapes</h2>
     <div class="etapes">
-      <div class="etape">
+      <div class="etape reveal">
+        <div class="icone">📝</div>
         <span class="num">1</span>
         <h3>Répondez aux questions</h3>
         <p>Vos coordonnées, celles de votre client, la facture concernée. 10 minutes, montre en main. Aperçu gratuit avant tout paiement.</p>
       </div>
-      <div class="etape">
+      <div class="etape reveal">
+        <div class="icone">🔒</div>
         <span class="num">2</span>
         <h3>Payez 49 € — une fois</h3>
         <p>Paiement sécurisé par Stripe. Pas d'abonnement, pas de compte à créer, pas de frais cachés.</p>
       </div>
-      <div class="etape">
+      <div class="etape reveal">
+        <div class="icone">📮</div>
         <span class="num">3</span>
         <h3>Envoyez en recommandé</h3>
         <p>Téléchargez votre lettre en PDF, signez-la, envoyez-la en recommandé avec accusé de réception. On vous explique la suite, gratuitement.</p>
@@ -85,31 +88,31 @@ import Base from '../layouts/Base.astro';
     </div>
   </section>
 
-  <section>
-    <h2>Outils gratuits</h2>
+  <section class="bande">
+    <h2 style="margin-top:0;">Outils gratuits</h2>
     <div class="grille-cartes">
-      <div class="carte">
+      <div class="carte reveal">
         <a href="/outils/calculateur-interets-retard/">
           <span class="tampon tampon--vert">Gratuit</span>
           <h3>Calculateur d'intérêts de retard</h3>
           <p>Calculez les pénalités et l'indemnité forfaitaire de 40 € que votre client vous doit légalement.</p>
         </a>
       </div>
-      <div class="carte">
+      <div class="carte reveal">
         <a href="/outils/generateur-relance/">
           <span class="tampon tampon--vert">Gratuit</span>
           <h3>Générateur d'email de relance</h3>
           <p>Relance amiable, ferme ou dernier avertissement : votre email prêt en 30 secondes.</p>
         </a>
       </div>
-      <div class="carte">
+      <div class="carte reveal">
         <a href="/comparatif/logiciel-facturation-gratuit/">
           <span class="tampon tampon--vert">Comparatif</span>
           <h3>Quel logiciel de facturation gratuit ?</h3>
           <p>Indy, Abby, Qonto : lequel est vraiment gratuit et conforme à la réforme, selon votre profil.</p>
         </a>
       </div>
-      <div class="carte">
+      <div class="carte reveal">
         <a href="/guides/">
           <span class="tampon tampon--bleu">Guides</span>
           <h3>Tous nos guides pratiques</h3>
@@ -145,6 +148,10 @@ import Base from '../layouts/Base.astro';
     </details>
   </section>
 
+  <script>
+    const io = new IntersectionObserver((es) => es.forEach(e => e.isIntersecting && e.target.classList.add('vu')), { threshold: .15 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
   <script type="application/ld+json" set:html={JSON.stringify({
     "@context": "https://schema.org",
     "@type": "FAQPage",
