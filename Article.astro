@@ -9,6 +9,9 @@ const schema = {
   datePublished: frontmatter.pubDate,
   inLanguage: "fr-FR",
 };
+
+const PENNYLANE_URL =
+  "https://lb.affilae.com/r/?p=608019f0b27a1f2e0480a96d&af=587&lp=https%3A%2F%2Fwww.pennylane.com%2Ffr%3Futm_source%3Dafl%26utm_campaign%3Dpennylane-fr%26utm_medium%3Dzenfactur";
 ---
 <Base title={frontmatter.title} description={frontmatter.description}>
   <article class="prose" style="margin-top:2.5rem;">
@@ -24,6 +27,94 @@ const schema = {
       Ils ne modifient pas le prix et n'influencent pas nos avis.</p>
     )}
     <slot />
+
+    {frontmatter.theme === 'efacture' && (
+      <div class="cta-pennylane">
+        <img
+          src="/pennylane/logo-pennylane.svg"
+          alt="Pennylane"
+          class="cta-pennylane__logo"
+          width="140"
+          height="36"
+          loading="lazy"
+        />
+        <div class="cta-pennylane__body">
+          <p class="cta-pennylane__pitch">
+            Factures, comptabilité et trésorerie réunis dans un seul outil —
+            conforme à la <strong>facturation électronique 2026</strong>.
+          </p>
+          <a
+            href={PENNYLANE_URL}
+            target="_blank"
+            rel="noopener sponsored"
+            class="cta-pennylane__btn"
+          >
+            Essayer Pennylane gratuitement →
+          </a>
+        </div>
+        <p class="cta-pennylane__mention">Lien partenaire — sans surcoût pour vous.</p>
+      </div>
+    )}
   </article>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Base>
+
+<style>
+  .cta-pennylane {
+    margin: 2.5rem 0 1rem;
+    border: 1.5px solid #b8e8d6;
+    border-radius: 10px;
+    background: #f3fcf8;
+    padding: 1.25rem 1.5rem 0.75rem;
+  }
+  .cta-pennylane__logo {
+    height: 26px;
+    width: auto;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .cta-pennylane__body {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .cta-pennylane__pitch {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #1a3a33;
+    line-height: 1.5;
+    flex: 1;
+    min-width: 200px;
+  }
+  .cta-pennylane__pitch strong {
+    color: #003d3d;
+  }
+  .cta-pennylane__btn {
+    display: inline-block;
+    background: #003d3d;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    padding: 0.55rem 1.15rem;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+    flex-shrink: 0;
+    transition: background 0.15s;
+  }
+  .cta-pennylane__btn:hover {
+    background: #0e9632;
+  }
+  .cta-pennylane__mention {
+    margin: 0.6rem 0 0;
+    font-size: 0.7rem;
+    color: #7a9e95;
+  }
+  @media (max-width: 520px) {
+    .cta-pennylane__body {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>
