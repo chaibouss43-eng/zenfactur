@@ -1,10 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
-// REMPLACER les URL ci-dessous par vos liens d'affiliation une fois validés (Affilae/Awin).
+
+const PENNYLANE_URL = "https://lb.affilae.com/r/?p=608019f0b27a1f2e0480a96d&af=587&lp=https%3A%2F%2Fwww.pennylane.com%2Ffr%3Futm_source%3Dafl%26utm_campaign%3Dpennylane-fr%26utm_medium%3Dzenfactur";
+
 const logiciels = [
   { nom: 'Indy', statut: 'Plateforme Agréée', gratuit: 'Facturation illimitée gratuite', pour: 'Indépendants et micro-entrepreneurs', lien: 'https://www.indy.fr' },
   { nom: 'Abby', statut: 'Plateforme Agréée + partenaire officiel URSSAF', gratuit: 'Facturation illimitée, e-signature de devis et déclarations URSSAF en offre gratuite', pour: 'Micro-entrepreneurs et indépendants', lien: 'https://c3po.link/QhE5eesYmt' },
   { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: 'https://qonto.com' },
+  { nom: 'Pennylane', statut: 'Plateforme Agréée + PDP immatriculée', gratuit: 'Offre payante — essai gratuit disponible', pour: 'TPE et PME avec comptable', lien: PENNYLANE_URL },
 ];
 ---
 <Base
@@ -82,6 +85,28 @@ const logiciels = [
     sens ; les offres réellement gratuites ci-dessus feront l'affaire.</p>
     <p><a href="https://qonto.com" rel="sponsored nofollow">Découvrir Qonto</a></p>
 
+    <h2>Pennylane — facturation, comptabilité et trésorerie pour les TPE avec comptable</h2>
+    <div class="split-2">
+      <div>
+        <p>Pennylane est la solution tout-en-un pensée pour les <strong>TPE et PME qui travaillent
+        avec un expert-comptable</strong> : facturation, achats, connexion bancaire, TVA, trésorerie
+        et révision comptable dans une seule plateforme. C'est aussi une
+        <strong>Plateforme de Dématérialisation Partenaire (PDP) immatriculée</strong> — le niveau
+        de conformité le plus élevé pour la réforme 2026, qui permet d'émettre, recevoir et
+        transmettre les factures électroniques directement à l'administration.</p>
+        <p>Ce qui le distingue : le dirigeant et son comptable travaillent sur les mêmes données
+        en temps réel — plus de fichiers Excel échangés par email. La connexion bancaire automatique
+        (toutes les grandes banques françaises) rapproche les factures et les paiements sans saisie.
+        Les limites honnêtes : c'est un outil <strong>payant</strong> (essai gratuit disponible),
+        taillé pour des entreprises avec un minimum d'activité comptable — pas le bon choix pour
+        un micro-entrepreneur qui cherche juste à facturer.</p>
+        <p><a class="btn btn--primaire" href={PENNYLANE_URL} rel="sponsored nofollow">Essayer Pennylane gratuitement</a></p>
+      </div>
+      <div style="display:flex; justify-content:center; align-items:center;">
+        <img src="/pennylane/mockup-pennylane.jpg" alt="Interface Pennylane : pilotage de trésorerie avec solde, encaissements et plan prévisionnel" width="320" loading="lazy" style="max-width:320px; height:auto; border-radius:8px;" />
+      </div>
+    </div>
+
     <h2>Le verdict selon votre profil</h2>
     <table>
       <thead>
@@ -91,13 +116,14 @@ const logiciels = [
         <tr><td>Micro-entrepreneur (artisan, service, commerce)</td><td><strong>Abby</strong> — facturation gratuite + télédéclaration URSSAF intégrée, le combo le plus complet sans payer</td></tr>
         <tr><td>Profession libérale / indépendant au réel</td><td><strong>Indy</strong> — facturation gratuite aujourd'hui, automatisation comptable quand vous serez prêt</td></tr>
         <tr><td>TPE qui cherche aussi un compte pro</td><td><strong>Qonto</strong> — facturation + banque + encaissements au même endroit</td></tr>
+        <tr><td>TPE/PME avec expert-comptable et besoins comptables avancés</td><td><strong>Pennylane</strong> — collaboration dirigeant + comptable, trésorerie, TVA et PDP tout-en-un</td></tr>
         <tr><td>Artisan BTP avec devis complexes et situations de chantier</td><td>Voir notre <a href="/guides/logiciel-facturation-artisan-batiment/">comparatif dédié BTP</a> (Obat, Axonaut, Tolteck)</td></tr>
       </tbody>
     </table>
 
     <div class="encadre">
       <strong>Le critère qui ne se négocie pas :</strong> quelle que soit votre préférence,
-      vérifiez la mention « Plateforme Agréée immatriculée » avant de vous engager. Les trois
+      vérifiez la mention « Plateforme Agréée immatriculée » avant de vous engager. Les quatre
       outils ci-dessus la remplissent — beaucoup d'autres logiciels connus, non. La différence
       est expliquée dans <a href="/guides/plateforme-agreee-ou-solution-compatible/">notre guide
       PA vs Solution Compatible</a>, et les échéances dans
@@ -109,5 +135,12 @@ const logiciels = [
         <img src="/abby/banniere-abby.jpg" alt="Abby : 100 000 indépendants ont simplifié leur quotidien — comptabilité et facturation gratuite" style="width:100%; height:auto; border-radius:10px;" loading="lazy" />
       </a>
     </p>
+
+    <p style="margin-top:1.5rem;">
+      <a href={PENNYLANE_URL} rel="sponsored nofollow">
+        <img src="/pennylane/banniere-pennylane.jpg" alt="Pennylane : gérez vos finances et votre comptabilité au même endroit" style="width:100%; height:auto; border-radius:10px;" loading="lazy" />
+      </a>
+    </p>
+
   </article>
 </Base>
