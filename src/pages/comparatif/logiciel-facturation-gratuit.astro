@@ -1,12 +1,13 @@
 ---
 import Base from '../../layouts/Base.astro';
 
+const QONTO_URL = "https://lb.affilae.com/r/?p=69a078113f38abd84385e0d9&af=2885&lp=https%3A%2F%2Fqonto.com%2Ffr%3Futm_source%3Dinfluence";
 const PENNYLANE_URL = "https://lb.affilae.com/r/?p=608019f0b27a1f2e0480a96d&af=587&lp=https%3A%2F%2Fwww.pennylane.com%2Ffr%3Futm_source%3Dafl%26utm_campaign%3Dpennylane-fr%26utm_medium%3Dzenfactur";
 
 const logiciels = [
   { nom: 'Indy', statut: 'Plateforme Agréée', gratuit: 'Facturation illimitée gratuite', pour: 'Indépendants et micro-entrepreneurs', lien: 'https://www.indy.fr' },
   { nom: 'Abby', statut: 'Plateforme Agréée + partenaire officiel URSSAF', gratuit: 'Facturation illimitée, e-signature de devis et déclarations URSSAF en offre gratuite', pour: 'Micro-entrepreneurs et indépendants', lien: 'https://c3po.link/QhE5eesYmt' },
-  { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: 'https://qonto.com' },
+  { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: QONTO_URL },
   { nom: 'Pennylane', statut: 'Plateforme Agréée + PDP immatriculée', gratuit: 'Offre payante — essai gratuit disponible', pour: 'TPE et PME avec comptable', lien: PENNYLANE_URL },
 ];
 ---
@@ -83,7 +84,7 @@ const logiciels = [
     dans l'abonnement du compte pro (à partir d'une dizaine d'euros par mois). Si vous avez
     déjà un compte pro qui vous convient, prendre Qonto uniquement pour facturer n'a pas de
     sens ; les offres réellement gratuites ci-dessus feront l'affaire.</p>
-    <p><a href="https://qonto.com" rel="sponsored nofollow">Découvrir Qonto</a></p>
+    <p><a href={QONTO_URL} rel="sponsored nofollow">Découvrir Qonto</a></p>
 
     <h2>Pennylane — facturation, comptabilité et trésorerie pour les TPE avec comptable</h2>
     <div class="split-2">
