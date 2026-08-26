@@ -1,6 +1,6 @@
 ---
 import Base from './Base.astro';
-const { frontmatter } = Astro.props;
+const { frontmatter, minutes, aLire } = Astro.props;
 const schema = {
   "@context": "https://schema.org",
   "@type": "Article",
@@ -21,6 +21,7 @@ const PENNYLANE_URL =
     <h1 style="margin-top:1rem;">{frontmatter.title}</h1>
     <p class="meta" style="color:var(--grise);font-size:.9rem;">
       Mis à jour le {new Date(frontmatter.pubDate).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' })}
+      {minutes && <> · {minutes} min de lecture</>}
     </p>
     {frontmatter.affiliation && (
       <p class="mention-affiliation">Cet article contient des liens d'affiliation, signalés comme tels.
@@ -55,9 +56,59 @@ const PENNYLANE_URL =
         <p class="cta-pennylane__mention">Lien partenaire — sans surcoût pour vous.</p>
       </div>
     )}
+
+    {aLire && aLire.length > 0 && (
+      <div class="a-lire-aussi">
+        <h2>À lire aussi</h2>
+        <div class="a-lire-grille">
+          {aLire.map((g) => (
+            <a class="a-lire-carte" href={`/guides/${g.id}/`}>
+              <h3>{g.data.title}</h3>
+              <p>{g.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    )}
   </article>
   <script type="application/ld+json" set:html={JSON.stringify(schema)} />
 </Base>
+
+<style>
+  .a-lire-aussi {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--ligne);
+  }
+  .a-lire-grille {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .a-lire-carte {
+    display: block;
+    border: 1px solid var(--ligne);
+    border-radius: 10px;
+    padding: 1rem 1.15rem;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.15s, border-color 0.15s;
+  }
+  .a-lire-carte:hover {
+    box-shadow: 0 6px 18px rgba(0,0,0,.08);
+    border-color: var(--bleu, #1a3a8f);
+  }
+  .a-lire-carte h3 {
+    margin: 0 0 .4rem;
+    font-size: 1rem;
+  }
+  .a-lire-carte p {
+    margin: 0;
+    font-size: .85rem;
+    color: var(--grise);
+    line-height: 1.4;
+  }
 
 <style>
   .cta-pennylane {
