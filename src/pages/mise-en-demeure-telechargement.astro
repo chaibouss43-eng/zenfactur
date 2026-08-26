@@ -37,7 +37,7 @@ import Base from '../layouts/Base.astro';
       // ==== Constantes ====
       const BLEU = [0, 0, 145], ROUGE = [193, 18, 31], GRIS = [107, 107, 112], NOIR = [22, 22, 29];
       const M = 20, W = 210 - 2 * M;
-      const TAUX_PENALITES = 12.35; // BCE + 10 pts — à actualiser chaque semestre
+      const TAUX_PENALITES = 12.40; // BCE + 10 pts — à actualiser chaque semestre (taux BCE 2,40 % depuis le 17/06/2026)
 
       const frDate = (iso) => { const p = (iso || '').split('-'); return p.length === 3 ? `${p[2]}/${p[1]}/${p[0]}` : iso; };
       const eur = (n) => n.toFixed(2).replace('.', ',') + ' \u20AC';
