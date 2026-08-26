@@ -1,0 +1,152 @@
+---
+import Base from '../../layouts/Base.astro';
+
+const QONTO_URL = "https://lb.affilae.com/r/?p=69a078113f38abd84385e0d9&af=2885&lp=https%3A%2F%2Fqonto.com%2Ffr%3Futm_source%3Dinfluence";
+const PENNYLANE_URL = "https://lb.affilae.com/r/?p=608019f0b27a1f2e0480a96d&af=587&lp=https%3A%2F%2Fwww.pennylane.com%2Ffr%3Futm_source%3Dafl%26utm_campaign%3Dpennylane-fr%26utm_medium%3Dzenfactur";
+
+const logiciels = [
+  { nom: 'Indy', statut: 'Plateforme Agréée', gratuit: 'Facturation illimitée gratuite', pour: 'Indépendants et micro-entrepreneurs', lien: 'https://www.indy.fr' },
+  { nom: 'Abby', statut: 'Plateforme Agréée + partenaire officiel URSSAF', gratuit: 'Facturation illimitée, e-signature de devis et déclarations URSSAF en offre gratuite', pour: 'Micro-entrepreneurs et indépendants', lien: 'https://c3po.link/QhE5eesYmt' },
+  { nom: 'Qonto Facturation', statut: 'Plateforme Agréée', gratuit: 'Facturation incluse, avec ou sans compte pro', pour: 'TPE qui veulent tout centraliser', lien: QONTO_URL },
+  { nom: 'Pennylane', statut: 'Plateforme Agréée + PDP immatriculée', gratuit: 'Offre payante — essai gratuit disponible', pour: 'TPE et PME avec comptable', lien: PENNYLANE_URL },
+];
+---
+<Base
+  title="Logiciel de facturation gratuit : Indy, Abby ou Qonto ? (comparatif)"
+  description="Trois logiciels de facturation réellement gratuits et conformes à la réforme de la facturation électronique, comparés selon votre statut et votre métier."
+>
+  <article class="prose" style="margin-top:2.5rem;">
+    <span class="tampon tampon--bleu">Comparatif</span>
+    <h1 style="margin-top:1rem;">Quel logiciel de facturation gratuit choisir ?</h1>
+    <p class="mention-affiliation">Cette page contient des liens d'affiliation. Ils ne changent
+    pas le prix pour vous et n'influencent pas nos conclusions.</p>
+
+    <p>En 2026-2027, le critère qui compte n'est plus « lequel est le moins cher »
+    mais « lequel est réellement conforme ». La réforme impose de passer par une
+    <strong>Plateforme Agréée immatriculée</strong> (ou une PDP) : recevoir des factures
+    électroniques est déjà obligatoire depuis septembre 2026, et l'émission le devient
+    en septembre 2027 pour les TPE et micro-entreprises. Les quatre outils ci-dessous
+    remplissent cette condition — et restent gratuits ou très abordables selon votre
+    profil.</p>
+
+    <table>
+      <thead>
+        <tr><th>Logiciel</th><th>Conformité e-facture</th><th>Ce qui est gratuit</th><th>Pour qui</th></tr>
+      </thead>
+      <tbody>
+        {logiciels.map((l) => (
+          <tr>
+            <td><a href={l.lien} rel="sponsored nofollow">{l.nom}</a></td>
+            <td>{l.statut}</td>
+            <td>{l.gratuit}</td>
+            <td>{l.pour}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+
+    <h2>Abby — le plus complet en gratuit pour les indépendants</h2>
+    <div class="split-2">
+      <div>
+        <p>Abby coche toutes les cases de la réforme : <strong>Plateforme Agréée immatriculée</strong>
+        (réception, émission et e-reporting gérés automatiquement), et — cas unique —
+        <strong>partenaire officiel de l'URSSAF</strong> : vous télédéclarez votre chiffre d'affaires
+        et payez vos cotisations directement depuis l'outil, pré-remplis à partir de vos factures.</p>
+        <p>L'offre gratuite couvre la facturation illimitée, les devis avec signature électronique
+        et le paiement en ligne. Les limites honnêtes : les fonctions avancées (comptabilité complète,
+        analyse fine, support prioritaire) passent par les offres payantes (12 à 59 €/mois selon le
+        statut), et l'outil vise les indépendants et micro-entrepreneurs — une société avec bilan
+        certifié se tournera plutôt vers un outil de comptabilité complet.</p>
+        <p><a class="btn btn--primaire" href="https://c3po.link/QhE5eesYmt" rel="sponsored nofollow">Essayer Abby gratuitement</a></p>
+      </div>
+      <div style="display:flex; justify-content:center;">
+        <img src="/abby/mockup-facturation.png" alt="Application mobile Abby : liste des factures avec statuts payée, finalisée et en retard" width="240" loading="lazy" style="max-width:240px; height:auto;" />
+      </div>
+    </div>
+
+    <h2>Indy — la comptabilité automatisée en plus de la facturation</h2>
+    <p>Indy est également <strong>Plateforme Agréée immatriculée</strong>, avec une offre gratuite
+    qui couvre la facturation illimitée (devis, factures, clients) et un compte pro sans frais.
+    Sa force distinctive : si vous prenez l'offre payante, l'outil automatise toute la
+    comptabilité des indépendants — synchronisation bancaire, catégorisation, déclarations
+    (2035, TVA, liasse) pré-remplies. C'est le choix naturel des professions libérales et
+    indépendants qui veulent se passer de comptable.</p>
+    <p>Les limites honnêtes : la partie réellement gratuite est la facturation et le compte
+    pro — l'automatisation comptable, cœur de la valeur d'Indy, est payante (une vingtaine
+    d'euros par mois selon les formules). Et l'outil est conçu pour les indépendants :
+    une TPE avec salariés ou des besoins de gestion commerciale poussés (stocks, chantiers)
+    sera à l'étroit.</p>
+    <p><a href="https://www.indy.fr" rel="sponsored nofollow">Découvrir Indy</a></p>
+
+    <h2>Qonto — la facturation intégrée au compte pro</h2>
+    <p>Qonto aborde le sujet par l'autre bout : c'est d'abord un <strong>compte professionnel</strong>,
+    dans lequel la facturation conforme est incluse. <strong>Plateforme Agréée immatriculée</strong>,
+    l'outil gère devis, factures électroniques et encaissements au même endroit — et le
+    rapprochement entre vos factures et vos paiements est automatique, puisque tout vit
+    dans la même interface. Pour une TPE qui cherche de toute façon un compte pro moderne
+    (IBAN français, cartes, virements), faire d'une pierre deux coups est pertinent.</p>
+    <p>Les limites honnêtes : ce n'est <strong>pas gratuit</strong> — la facturation est incluse
+    dans l'abonnement du compte pro (à partir d'une dizaine d'euros par mois). Si vous avez
+    déjà un compte pro qui vous convient, prendre Qonto uniquement pour facturer n'a pas de
+    sens ; les offres réellement gratuites ci-dessus feront l'affaire.</p>
+    <p><a href={QONTO_URL} rel="sponsored nofollow">Découvrir Qonto</a></p>
+
+    <h2>Pennylane — facturation, comptabilité et trésorerie pour les TPE avec comptable</h2>
+    <div class="split-2">
+      <div>
+        <p>Pennylane est la solution tout-en-un pensée pour les <strong>TPE et PME qui travaillent
+        avec un expert-comptable</strong> : facturation, achats, connexion bancaire, TVA, trésorerie
+        et révision comptable dans une seule plateforme. C'est aussi une
+        <strong>Plateforme de Dématérialisation Partenaire (PDP) immatriculée</strong> — le niveau
+        de conformité le plus élevé pour la réforme 2026, qui permet d'émettre, recevoir et
+        transmettre les factures électroniques directement à l'administration.</p>
+        <p>Ce qui le distingue : le dirigeant et son comptable travaillent sur les mêmes données
+        en temps réel — plus de fichiers Excel échangés par email. La connexion bancaire automatique
+        (toutes les grandes banques françaises) rapproche les factures et les paiements sans saisie.
+        Les limites honnêtes : c'est un outil <strong>payant</strong> (essai gratuit disponible),
+        taillé pour des entreprises avec un minimum d'activité comptable — pas le bon choix pour
+        un micro-entrepreneur qui cherche juste à facturer.</p>
+        <p><a class="btn btn--primaire" href={PENNYLANE_URL} rel="sponsored nofollow">Essayer Pennylane gratuitement</a></p>
+      </div>
+      <div style="display:flex; justify-content:center; align-items:center;">
+        <img src="/mockup-pennylane.jpg" alt="Interface Pennylane : pilotage de trésorerie avec solde, encaissements et plan prévisionnel" width="320" loading="lazy" style="max-width:320px; height:auto; border-radius:8px;" />
+      </div>
+    </div>
+
+    <h2>Le verdict selon votre profil</h2>
+    <table>
+      <thead>
+        <tr><th>Votre situation</th><th>Notre recommandation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Micro-entrepreneur (artisan, service, commerce)</td><td><strong>Abby</strong> — facturation gratuite + télédéclaration URSSAF intégrée, le combo le plus complet sans payer</td></tr>
+        <tr><td>Profession libérale / indépendant au réel</td><td><strong>Indy</strong> — facturation gratuite aujourd'hui, automatisation comptable quand vous serez prêt</td></tr>
+        <tr><td>TPE qui cherche aussi un compte pro</td><td><strong>Qonto</strong> — facturation + banque + encaissements au même endroit</td></tr>
+        <tr><td>TPE/PME avec expert-comptable et besoins comptables avancés</td><td><strong>Pennylane</strong> — collaboration dirigeant + comptable, trésorerie, TVA et PDP tout-en-un</td></tr>
+        <tr><td>Artisan BTP avec devis complexes et situations de chantier</td><td>Voir notre <a href="/guides/logiciel-facturation-artisan-batiment/">comparatif dédié BTP</a> (Obat, Axonaut, Tolteck)</td></tr>
+      </tbody>
+    </table>
+
+    <div class="encadre">
+      <strong>Le critère qui ne se négocie pas :</strong> quelle que soit votre préférence,
+      vérifiez la mention « Plateforme Agréée immatriculée » avant de vous engager. Les quatre
+      outils ci-dessus la remplissent — beaucoup d'autres logiciels connus, non. La différence
+      est expliquée dans <a href="/guides/plateforme-agreee-ou-solution-compatible/">notre guide
+      PA vs Solution Compatible</a>, et les échéances dans
+      <a href="/guides/facturation-electronique-guide-tpe/">le guide complet de la réforme</a>.
+    </div>
+
+    <p style="margin-top:2rem;">
+      <a href="https://c3po.link/QhE5eesYmt" rel="sponsored nofollow">
+        <img src="/abby/banniere-abby.jpg" alt="Abby : 100 000 indépendants ont simplifié leur quotidien — comptabilité et facturation gratuite" style="width:100%; height:auto; border-radius:10px;" loading="lazy" />
+      </a>
+    </p>
+
+    <p style="margin-top:1.5rem;">
+      <a href={PENNYLANE_URL} rel="sponsored nofollow">
+        <img src="/banniere-pennylane.jpg" alt="Pennylane : gérez vos finances et votre comptabilité au même endroit" style="width:100%; height:auto; border-radius:10px;" loading="lazy" />
+      </a>
+    </p>
+
+  </article>
+</Base>
