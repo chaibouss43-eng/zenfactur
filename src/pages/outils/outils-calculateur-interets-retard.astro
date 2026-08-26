@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base
+  title="Calculateur d'intérêts de retard et indemnité de 40 € (gratuit)"
+  description="Calculez gratuitement les pénalités de retard qu'un client professionnel vous doit sur une facture impayée, plus l'indemnité forfaitaire de 40 €."
+>
+  <section class="hero" style="padding-bottom:1rem;">
+    <span class="tampon tampon--vert">Outil gratuit</span>
+    <h1 style="margin-top:1rem;">Calculateur d'intérêts de retard</h1>
+    <p class="sous-titre">Entre professionnels, chaque facture en retard génère automatiquement
+    des pénalités et une indemnité de 40 €. Calculez ce qu'on vous doit vraiment.</p>
+  </section>
+
+  <form class="formulaire" id="calc">
+    <div class="grille-2">
+      <div class="champ">
+        <label for="montant">Montant TTC de la facture (€)</label>
+        <input id="montant" type="number" step="0.01" min="0" required />
+      </div>
+      <div class="champ">
+        <label for="echeance">Date d'échéance</label>
+        <input id="echeance" type="date" required />
+      </div>
+      <div class="champ">
+        <label for="taux">Taux annuel de pénalités (%)</label>
+        <input id="taux" type="number" step="0.01" value="12.40" />
+        <small style="color:var(--grise)">Par défaut : taux BCE + 10 points (2,40 % depuis le 17/06/2026 — à vérifier selon le semestre en cours). Vos CGV peuvent prévoir un autre taux (minimum : 3 × taux légal).</small>
+      </div>
+    </div>
+    <button type="button" class="btn btn--primaire" id="btn-calc">Calculer</button>
+  </form>
+
+  <div id="resultat" class="encadre" style="display:none;"></div>
+
+  <div class="encadre encadre--alerte" style="margin-top:2rem;">
+    <strong>Votre client refuse de payer, même les pénalités ?</strong>
+    La mise en demeure est l'étape suivante — <a href="/mise-en-demeure/">générez-la en 10 minutes</a>,
+    intérêts et indemnité inclus.
+  </div>
+
+  <script>
+    document.getElementById('btn-calc').addEventListener('click', () => {
+      const m = parseFloat(document.getElementById('montant').value || '0');
+      const t = parseFloat(document.getElementById('taux').value || '0') / 100;
+      const ech = new Date(document.getElementById('echeance').value);
+      if (!m || isNaN(ech.getTime())) return;
+      const jours = Math.max(0, Math.floor((Date.now() - ech.getTime()) / 86400000));
+      const interets = m * t * (jours / 365);
+      const total = m + interets + 40;
+      const r = document.getElementById('resultat');
+      r.style.display = 'block';
+      r.innerHTML = `<strong>${jours} jours de retard.</strong><br/>
+        Pénalités de retard : <strong>${interets.toFixed(2)} €</strong><br/>
+        Indemnité forfaitaire de recouvrement : <strong>40,00 €</strong><br/>
+        Total exigible : <strong>${total.toFixed(2)} €</strong>
+        <br/><small>Calcul indicatif, applicable entre professionnels (B2B).</small>`;
+    });
+  </script>
+</Base>
